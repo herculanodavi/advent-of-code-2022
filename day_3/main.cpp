@@ -10,9 +10,9 @@
 int value(char c) {
   char origin;
   if (c <= 'Z') {
-    return static_cast<int>((c - 'A') + 27);
+    return static_cast<int>(c - 'A') + 27;
   } else {
-    return static_cast<int>((c - 'a') + 1);
+    return static_cast<int>(c - 'a') + 1;
   }
 }
 
