@@ -45,13 +45,13 @@ Play match_play(Play p, Result r) {
 // Returns score for rhs
 int score(Play lhs, Play rhs) {
   if (lhs == rhs)
-    return 3;
+    return Result::Draw;
 
   int beats_rhs = match_play(rhs, Result::Win);
   if (lhs == beats_rhs)
-    return 0;
+    return Result::Lose;
 
-  return 6;
+  return Result::Win;
 }
 
 int value(Play p) { return p + 1; }
