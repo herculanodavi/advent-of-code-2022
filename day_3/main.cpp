@@ -23,7 +23,7 @@ template <typename... T> auto unique_common(T... Sequences) {
 
   auto has_any_ended = [&]() {
     for (int i = 0; i < sizeof...(Sequences); i++) {
-      if (pointers[i] == ends[i])
+      if (pointers.at(i) == ends.at(i))
         return true;
     }
     return false;
@@ -31,12 +31,12 @@ template <typename... T> auto unique_common(T... Sequences) {
 
   auto is_same = [&]() {
     return std::all_of(pointers.begin(), pointers.end(),
-                       [&](auto p) { return *p == *pointers[0]; });
+                       [&](auto p) { return *p == *pointers.at(0); });
   };
 
   while (!has_any_ended()) {
     if (is_same()) {
-      return *pointers[0];
+      return *pointers.at(0);
     } else {
       auto el =
           std::min_element(pointers.begin(), pointers.end(),
@@ -55,7 +55,7 @@ auto first_question(std::ifstream &stream) {
   while (!stream.eof()) {
     getline(stream, line);
     auto half_size = line.size() / 2;
-    std::span first{&line[0], half_size};
+    std::span first{&line.at(0), half_size};
     std::span second{&line[half_size], half_size};
     result += value(unique_common(first, second));
   }
