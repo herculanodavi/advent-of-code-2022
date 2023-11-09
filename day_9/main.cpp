@@ -6,8 +6,8 @@
 using input_t = std::vector<std::pair<char, std::size_t>>;
 
 struct knot_state_t {
-    int dx = 0;
-    int dy = 0;
+    std::int16_t dx = 0;
+    std::int16_t dy = 0;
 
     bool operator==(const knot_state_t &other) const {
         return other.dx == dx && other.dy == dy;
@@ -18,7 +18,7 @@ namespace std {
     template<>
     struct hash<knot_state_t> {
         size_t operator()(knot_state_t const &state) const noexcept {
-            return state.dx * state.dy;
+            return (state.dx << 16) | state.dy;
         }
     };
 }
@@ -49,11 +49,11 @@ knot_state_t move_head(knot_state_t state, char step) {
 }
 
 knot_state_t follow(knot_state_t head, knot_state_t tail) {
-    auto delta = [](int x0, int x1) {
+    auto delta = [](int x0, int x1) -> std::int16_t {
         return x0 > x1 ? -1 : 1;
     };
 
-    if(std::abs(head.dx - tail.dx) < 2 && std::abs(head.dy - tail.dy) < 2) {
+    if (std::abs(head.dx - tail.dx) < 2 && std::abs(head.dy - tail.dy) < 2) {
         return tail;
     }
 
@@ -82,16 +82,16 @@ rope_state_t<NumKnots> next_step(rope_state_t<NumKnots> state, char step) {
 
 template<std::size_t NumKnots>
 void draw_rope(rope_state_t<NumKnots> rope) {
-    constexpr int grid_x = 12;
-    constexpr int grid_y = 12;
+    constexpr std::int16_t grid_x = 12;
+    constexpr std::int16_t grid_y = 12;
 
-    for (int y = grid_y; y > 0; y--) {
-        for (int x = 0; x < grid_x; x++) {
-            auto position = knot_state_t{x - grid_x / 2, y - grid_y / 2};
+    for (std::int16_t y = grid_y; y > 0; y--) {
+        for (std::int16_t x = 0; x < grid_x; x++) {
+            auto position = knot_state_t{static_cast<int16_t>(x - grid_x / 2), static_cast<int16_t>(y - grid_y / 2)};
             auto element = std::find(rope.knots.cbegin(), rope.knots.cend(), position);
-            if(element != rope.knots.cend()) {
+            if (element != rope.knots.cend()) {
                 std::cout << std::to_string(std::distance(rope.knots.cbegin(), element));
-            } else if(x == grid_x / 2 && y == grid_y / 2) {
+            } else if (x == grid_x / 2 && y == grid_y / 2) {
                 std::cout << "s";
             } else {
                 std::cout << ".";
