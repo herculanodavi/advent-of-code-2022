@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.26)
+project(2022)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED true)
+
+add_subdirectory(day_1)
+add_subdirectory(day_2)
+add_subdirectory(day_3)
+add_subdirectory(day_4)
+add_subdirectory(day_5)
+add_subdirectory(day_6)
+add_subdirectory(day_7)
+add_subdirectory(day_8)
+add_subdirectory(day_9)
